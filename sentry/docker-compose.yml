@@ -1,0 +1,81 @@
+# sentry docker compose file settings 
+version: '2'
+services:
+  # postgresql
+  postgres:
+    image: sameersbn/postgresql:latest
+    volumes:
+        - "/data/docker/data/postgres:/var/lib/postgresql"
+    environment:
+        - DB_USER=admin
+        - DB_PASS=root
+        - DB_NAME=postgres
+  # redis
+  redis:
+    image: redis:latest
+    volumes:
+      - "/data/docker/data/redis:/data"
+    command: redis-server
+  
+  # celery worker
+  worker: 
+    image: slafs/sentry:7.7
+    links:
+      - postgres:postgresdb
+      - redis:redis
+    environment:
+      # basic settings url db cache
+      # change your domain
+      - SENTRY_URL_PREFIX=http://xxx.xxx.com
+      # change your secret key
+      - SECRET_KEY=123123
+      - DATABASE_URL=postgres://admin:root@postgresdb/postgres
+      - CELERY_ALWAYS_EAGER=False
+      - CELERY_RESULT_SERIALIZER=json 
+      - CELERY_TASK_SERIALIZER=json
+      - CELERY_ACCEPT_CONTENT=json
+    volumes:
+      - "/data/docker/data/sentry/worker:/data"
+    command: "celery worker -B -l INFO"
+    depends_on:
+      - redis
+      - postgres
+
+  # sentry web
+  sentry: 
+    image: slafs/sentry:7.7
+    ports:
+      - "8989:9000"
+    links:
+      - postgres:postgresdb
+      - redis:redis
+    environment:
+      # basic settings url db cache
+      # change your domain
+      - SENTRY_URL_PREFIX=http://xxx.xxx.com
+      # change your key
+      - SECRET_KEY=123123
+      - DATABASE_URL=postgres://admin:root@postgresdb/postgres
+      - CELERY_ALWAYS_EAGER=False
+      - CELERY_RESULT_SERIALIZER=json 
+      - CELERY_TASK_SERIALIZER=json
+      - CELERY_ACCEPT_CONTENT=json
+  
+      # email settings 
+      - SENTRY_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+      # change your smtp setting
+      - SENTRY_EMAIL_HOST=smtp.xxx.xx
+      # change your email user password 
+      - SENTRY_EMAIL_HOST_PASSWORD=password
+      # change your email user username
+      - SENTRY_EMAIL_HOST_USER=sentry@xxxx.xx
+      - SENTRY_EMAIL_PORT=25
+      - SENTRY_EMAIL_USE_TLS=False
+      # change your sentry email address
+      - SENTRY_SERVER_EMAIL=sentry@xxxx.xx
+    volumes:
+      - "/data/docker/data/sentry:/data"
+    command: "start"
+    depends_on:
+      - redis
+      - postgres
