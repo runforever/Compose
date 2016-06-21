@@ -31,9 +31,20 @@ services:
       - SECRET_KEY=123123
       - DATABASE_URL=postgres://admin:root@postgresdb/postgres
       - CELERY_ALWAYS_EAGER=False
-      - CELERY_RESULT_SERIALIZER=json 
-      - CELERY_TASK_SERIALIZER=json
-      - CELERY_ACCEPT_CONTENT=json
+      - C_FORCE_ROOT=1
+
+      # email settings
+      - SENTRY_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+      # change your smtp setting
+      - SENTRY_EMAIL_HOST=smtp.xxx.xx
+      # change your email user password
+      - SENTRY_EMAIL_HOST_PASSWORD=password
+      # change your email user username
+      - SENTRY_EMAIL_HOST_USER=sentry@xxxx.xx
+      - SENTRY_EMAIL_PORT=25
+      - SENTRY_EMAIL_USE_TLS=False
+      # change your sentry email address
+      - SENTRY_SERVER_EMAIL=sentry@xxxx.xx
     volumes:
       - "/data/docker/data/sentry/worker:/data"
     command: "celery worker -B -l INFO"
@@ -57,15 +68,12 @@ services:
       - SECRET_KEY=123123
       - DATABASE_URL=postgres://admin:root@postgresdb/postgres
       - CELERY_ALWAYS_EAGER=False
-      - CELERY_RESULT_SERIALIZER=json 
-      - CELERY_TASK_SERIALIZER=json
-      - CELERY_ACCEPT_CONTENT=json
   
-      # email settings 
+      # email settings
       - SENTRY_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
       # change your smtp setting
       - SENTRY_EMAIL_HOST=smtp.xxx.xx
-      # change your email user password 
+      # change your email user password
       - SENTRY_EMAIL_HOST_PASSWORD=password
       # change your email user username
       - SENTRY_EMAIL_HOST_USER=sentry@xxxx.xx
