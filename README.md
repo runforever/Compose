@@ -9,6 +9,7 @@
 <li><a href="#sec-1-1-1">1.1.1. sentry的compose配置</a></li>
 </ul>
 </li>
+<li><a href="#sec-1-2">1.2. docker registry</a></li>
 </ul>
 </li>
 </ul>
@@ -35,3 +36,7 @@
 <https://hub.docker.com/_/redis/> redis
 
 <https://github.com/sameersbn/docker-postgresql>  postgres
+
+## docker registry
+
+参考文档：<http://runforever.github.io/blog/2016-07-06-如何搭建私有docker-registry.html>
