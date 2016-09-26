@@ -15,3 +15,9 @@ cp /path/certs/privkey.pem /path/certs/privkey.pem.bak
 cp /etc/letsencrypt/live/docker.burnish.cn/fullchain.pem /path/certs/fullchain.pem
 
 cp /etc/letsencrypt/live/docker.burnish.cn/privkey.pem /path/certs/privkey.pem
+
+# restart docker registry
+cd /path/docker-registy && docker-compose restart registry
+
+# reload nginx
+nginx -s reload
