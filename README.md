@@ -1,42 +1,14 @@
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1. 一些有用的docker compose配置</a>
-<ul>
-<li><a href="#sec-1-1">1.1. sentry</a>
-<ul>
-<li><a href="#sec-1-1-1">1.1.1. sentry的compose配置</a></li>
-</ul>
-</li>
-<li><a href="#sec-1-2">1.2. docker registry</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
+# 一些 docker compose 配置
 
-# 一些有用的docker compose配置
+### 包含配置
+1. sentry 7.7.4
+2. docker registry
 
-## sentry
+### 使用
+```
+git clone https://github.com/runforever/Compose.git
+cd sentry 
+# 修改相关配置
+docker-compose up
+```
 
-### sentry的compose配置
-
--   版本7.7.4
-
-使用postgresql、redis、celery搭建
-
-    # 使用
-    # docker-compose up
-
-感谢
-
-<https://github.com/slafs/sentry-docker>  sentry
-
-<https://hub.docker.com/_/redis/> redis
-
-<https://github.com/sameersbn/docker-postgresql>  postgres
-
-## docker registry
-
-参考文档：<http://runforever.github.io/blog/2016-07-06-如何搭建私有docker-registry.html>
